@@ -1,0 +1,279 @@
+#!/bin/bash
+# ##################################################################################
+# (c) Copyright IBM Corp. 2015
+#
+# configure.ini This file is used to specify the installation properties for your 
+#               Cloudant Local implementation. The Cloudant configure.sh script can 
+#               use these properties to configure either a Cloudant Local
+#               * single node implementation, or
+#               * all database and load balancer nodes in a multi-node cluster.
+#
+# You must supply the appropriate properties or values for the variables defined in 
+# this file before you run the configure.sh script. The required properties or 
+# values are described in this file in the commented lines (#) that appear before
+# each variable.
+# ##################################################################################
+
+# #################################################################################
+# _FILE_VERSION is used to ensure that the configure.ini file is in sync with the
+# configure.sh file. Do not change the value of this field unless instructed to
+# do so by IBM.
+# #################################################################################
+_FILE_VERSION=2
+
+# #################################################################################
+# Specify the _ADMIN_USER_ID and _ADMIN_PASSWORD that will be used in the following 
+# files:
+# /opt/cloudant/etc/local.ini
+# /opt/cloudant/etc/metrics.ini
+#
+# _ADMIN_USER_ID= Enter the user ID for the administrator, which is usually "admin".
+# _ADMIN_PASSWORD= Enter the unencrypted password for the administrator.
+# 
+# For example:
+# _ADMIN_USER_ID=admin
+# _ADMIN_PASSWORD=admin_password
+# ##################################################################################
+_ADMIN_USER_ID=$$admin_user
+_ADMIN_PASSWORD=$$admin_password
+
+# ##################################################################################
+# Specify the _CLOUDANT_PASSWORD variable with the value that will be used in
+# the file:
+# /opt/cloudant/etc/local.ini
+#
+# _CLOUDANT_PASSWORD= Enter the unencrypted password for the "cloudant" user ID.
+# 
+# For example:
+# _CLOUDANT_PASSWORD=cloudant_password
+# ##################################################################################
+_CLOUDANT_PASSWORD=$$cloudant_password
+
+# ##################################################################################
+# The _ADMIN_ENCRYPTED_PASSWORD and _CLOUDANT_ENCRYPTED_PASSWORD variables are 
+# pulled from the _ADMIN_PASSWORD and _CLOUDANT_PASSWORD variables 
+# respectively, after they are encrypted in the file:
+# /opt/cloudant/etc/local.ini
+#
+# When the values are:
+# _ADMIN_ENCRYPTED_PASSWORD=_admin_not_set
+# _CLOUDANT_ENCRYPTED_PASSWORD=_cloudant_not_set
+# 
+# You must run the configure.sh script on the first node to encrypt the passwords.
+# The configure.sh will replace the values '_xxxx_not_set' in this file, with an 
+# encrypted value. For example:
+# 
+# _ADMIN_ENCRYPTED_PASSWORD= -pbkdf2-7a59dd09a032a1594f19aa1cc81ad4a2bc0bbf85,1453d1585577ae9fa31c83cc645f4400,10
+# _CLOUDANT_ENCRYPTED_PASSWORD= -pbkdf2-77438258db821bf035073adf8d42a1dc398ec357,b0d0aee113e35860b49610a177dc9c64,10
+# 
+# The encrypted values will then be used on subsequent nodes.
+# 
+# ##################################################################################
+_ADMIN_ENCRYPTED_PASSWORD=_admin_not_set
+_CLOUDANT_ENCRYPTED_PASSWORD=_cloudant_not_set
+
+# ##################################################################################
+# Specify the _HAPROXY_USER_ID and _HAPROXY_PASSWORD variables with the values that
+# will be used in the file:
+# /opt/haproxy/haproxy.cfg
+#
+# _HAPROXY_USER_ID=  Enter the user ID for the administrator, which is usually "admin".
+# _HAPROXY_PASSWORD= Enter the unencrypted password for the administrator. 
+# 
+# For example:
+# _HAPROXY_USER_ID=admin
+# _HAPROXY_PASSWORD=haproxy_password
+# ##################################################################################
+_HAPROXY_USER_ID=$$haproxy_user
+_HAPROXY_PASSWORD=$$haproxy_password
+
+# ##################################################################################
+# Specify the _JMXREMOTE_PASSWORD variable with the value that will be used in
+# the file:
+# /opt/cloudant/etc/jmxremote.password
+#
+# This will be used in conjunction with the "monitorRole" role in the file 
+#
+# (jvm)/jre/lib/management/jmxremote.access
+#
+# that is part of the JVM.
+#
+# _JMXREMOTE_PASSWORD= Enter the unencrypted password for the "monitorRole" user role.
+# 
+# For example:
+# _JMXREMOTE_PASSWORD=jmxremove_password
+# ##################################################################################
+_JMXREMOTE_PASSWORD=$$jmxremote_password
+
+# ##################################################################################
+# Specify the _METRICS_URL to the location in which you want the metrics database 
+# created. Your target database can be on the local Cloudant database or a remote 
+# Cloudant database. The default value is your local Cloudant database.
+# _METRICS_URL=http://localhost:5984
+#
+# Specify  the name for your metrics database in _METRICS_DBNAME. Only lowercase
+# letters (a-z), digits (0-9), and any of the characters _, $, (, ), +, -, and / 
+# are allowed. The database name must begin with a letter. The default name 
+# is metrics.
+# _METRICS_DBNAME=metrics
+# 
+# Specify the polling interval, in minutes, for the metrics application in 
+# _METRICS_INTERVAL. The metrics application polls at specified intervals, and
+# collects statistics from the dbnode. By default, the collection interval time
+# is 1 minute.
+# _METRICS_INTERVAL=1
+#
+# Specify the _METRICS_USER_ID and _METRICS_PASSWORD that will be used to access 
+# the location specfiled in _METRICS_URL.  
+# NOTE: If the value for _METRICS_URL is the default, (http://localhost:5984), then
+#       _METRICS_USER_ID and _METRICS_PASSWORD must match the values in
+#       _ADMIN_USER_ID and _ADMIN_PASSWORD.
+#
+# _METRICS_USER_ID= Enter the user ID for the administrator, which is usually "admin",
+#                   of the target that is to contain the metrics database.
+# _METRICS_PASSWORD= Enter the unencrypted password for the administrator.
+#                    of the target that is to contain the metrics database.
+#
+# To change a value once it have has been changed from its default, you must manually
+# update the file listed here on every node of your cluster.
+# /opt/cloudant/etc/metrics.ini
+# #################################################################################
+_METRICS_URL=http://localhost:5984
+_METRICS_DBNAME=metrics
+_METRICS_INTERVAL=1
+_METRICS_USER_ID=$$metrics_user
+_METRICS_PASSWORD=$$metrics_password
+
+# ############################################################################
+# Database Nodes (DB)
+#
+# Specify the following information for the DB nodes in your cluster: 
+#  * Enter the number of DB nodes in your cluster in _DB_NODE_CNT 
+#  * Enter the machine name for each DB node in _DB_NODE_ARRAY
+#  * Enter the IP address for each DB node in _DB_IP_ARRAY
+#
+# For example, to implement a traditional 3 node cluster, do this: 
+#  * Enter the number 3 in _DB_NODE_CNT
+#  * Enter the 3 host names for the DB nodes in _DB_NODE_ARRAY
+#  * Enter the 3 IP addresses for the DB nodes in _DB_IP_ARRAY
+#
+# Here is an example of how to specify a 3 DB node cluster:
+#
+# _DB_NODE_CNT=3
+# _DB_NODE_ARRAY=( db1.your_locale.your_company.com \
+#                  db2.your_locale.your_company.com \
+#                  db3.your_locale.your_company.com )
+# _DB_IP_ARRAY=( 0.0.0.0 \
+#                0.0.0.0 \
+#                0.0.0.0 )
+#
+# In the previous example, replace the "dbn.your_locale.your_company.com"
+# entries with the host names for your 3 DB nodes, and replace "0.0.0.0"
+# with the IP addresses for those nodes.
+#
+# For a larger cluster with more DB nodes, do this:
+# * Change the number of DB nodes in _DB_NODE_CNT to the appropriate number
+# * Add the additional host names for the DB nodes to _DB_NODE_ARRAY
+# * Add the additional IP addresses for the DB nodes to _DB_IP_ARRAY.
+#
+# Here is an example of how to specify a 5 DB node cluster:
+#
+# _DB_NODE_CNT=5
+# _DB_NODE_ARRAY=( db1.your_locale.your_company.com \
+#                  db2.your_locale.your_company.com \
+#                  db3.your_locale.your_company.com \
+#                  db4.your_locale.your_company.com \
+#                  db5.your_locale.your_company.com )
+# _DB_IP_ARRAY=( 0.0.0.0 \
+#                0.0.0.0 \
+#                0.0.0.0 \
+#                0.0.0.0 \
+#                0.0.0.0 )
+#
+# For a single node implementation, do this:
+# * Enter 1 to _DB_NODE_CNT
+# * Enter the host name of the single node in _DB_NODE_ARRAY
+# * Enter the IP address of the single node in _DB_IP_ARRAY
+#
+# Here is an example of how to specify a single node implementation:
+#
+# _DB_NODE_CNT=1
+# _DB_NODE_ARRAY=( db.your_locale.your_company.com )
+# _DB_IP_ARRAY=( 0.0.0.0 )
+# ############################################################################
+_DB_NODE_CNT=1
+_DB_NODE_ARRAY=( $$node_host )
+_DB_IP_ARRAY=( $$node_ip )
+
+# ############################################################################
+# Load Balancer Machines (LB)
+#
+# Specify the following information for the Load Balancers in your cluster: 
+#  * Enter the number of LB nodes in your cluster in _LB_CNT 
+#  * Enter the machine name for each LB node in _LB_ARRAY
+#
+# For example, for a 2 LB implementation (that is, a primary and a failover 
+# LB), do this: 
+#  * Enter the number 2 in _LB_CNT 
+#  * Enter the host names for the 2 LBs in _LB_ARRAY
+#
+# Here is an example of how to specify an implementation for 2 LB nodes:
+#
+# _LB_CNT=2
+# _LB_ARRAY=( lb1.your_locale.your_company.com \
+#             lb2.your_locale.your_company.com )
+#
+# In the previous example, replace the "lbn.your_locale.your_company.com" 
+# entries with the host names for your 2 LB nodes.
+#
+# For a single LB implementation, where the Load Balancer is installed on a 
+# separate machine from the DB nodes, do this:
+#  * Enter the number 1 in _LB_CNT 
+#  * Enter the host name for your one LB node in _LB_ARRAY
+#
+# Here is an example of how to specify this kind of single LB implementation:
+#
+# _LB_CNT=1
+# _LB_ARRAY=( lb.your_locale.your_company.com )
+#
+# For a single node implementation, where the DB and LB are installed on a 
+# single machine, do this:
+#  * Enter 0 (zero) in _LB_CNT 
+#  * Remove any value specified for _LB_ARRAY
+#
+# Here is an example of how to specify this kind of single LB implementation:
+#
+# _LB_CNT=0
+# _LB_ARRAY=
+# ############################################################################
+_LB_CNT=0
+_LB_ARRAY=
+
+# ############################################################################
+# For a new installation, generate a lengthy random value for Erlang 
+# authentication by issuing a command like this one:
+#
+# openssl rand -hex 16
+#
+# For an existing installation, use the cookie value assigned to -setcookie 
+# in the file /opt/cloudant/vm.args as shown below.
+#
+# -setcookie c7b834ac75b63600d246bc50c2bd1358
+#
+# Next, enter the generated value or the cookie from an existing vm.args, in
+# _COOKIE as shown in this example:
+#
+# _COOKIE=c7b834ac75b63600d246bc50c2bd1358
+#
+# This same value must be used for every node in your cluster. Alternatively, 
+# you can put the appropriate command in the assignment, as shown here:
+#
+# _COOKIE=$(openssl rand -hex 16)
+# 
+# On a new installation, when configure.sh is run the first time, an appropriate
+# random value will be generated. If a prior version of Cloudant Local is found, 
+# the cookie in the file /opt/cloudant/vm.args will be used.  In both cases, 
+# the value used will be automatically assigned to _COOKIE in this file.
+# ############################################################################
+_COOKIE=$(openssl rand -hex 16)
+
