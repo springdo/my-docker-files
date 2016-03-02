@@ -1,6 +1,6 @@
 #jenkins-maven-slave
-#AEM Publisher CentOS
 FROM jenkins-ssh-slave:latest
+MAINTAINER Donal Spring <donal@uk.ibm.com>
 
 #1. Install JDK 7
 RUN apt-get install -y openjdk-7-jdk --fix-missing

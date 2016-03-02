@@ -15,5 +15,5 @@ RUN node -v
 RUN npm -v
 
 # Install bower, grunt and yo
-RUN npm install -g bower grunt grunt-cli yo
+RUN npm install -g bower grunt grunt-cli yo gulp
 RUN npm install -g npm-cache
