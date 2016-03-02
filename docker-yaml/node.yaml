@@ -1,0 +1,10 @@
+- RUN :
+  - curl -sL https://deb.nodesource.com/setup_5.x | bash
+  - apt-get install -y nodejs libfontconfig
+  - npm install -g n
+  - n stable
+  - n 5.3.0
+  - node -v
+  - npm -v
+  - npm install -g bower grunt grunt-cli yo gulp
+  - npm install npm-cache
