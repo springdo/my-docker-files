@@ -20,9 +20,9 @@ EXPOSE 22
 RUN useradd --uid=1099 -p dW7IzpQGfPQtY -ms /bin/bash jenkins
 ENV JENKINS_HOME /home/jenkins
 RUN mkdir -p ${JENKINS_HOME}/.ssh
-ADD id_rsa.pub ${JENKINS_HOME}/.ssh/authorized_keys
+#ADD id_rsa.pub ${JENKINS_HOME}/.ssh/authorized_keys
 RUN chown -R jenkins:jenkins ${JENKINS_HOME}
-RUN chmod 700 ${JENKINS_HOME}/.ssh
-RUN chmod 600 ${JENKINS_HOME}/.ssh/authorized_keys
+#RUN chmod 700 ${JENKINS_HOME}/.ssh
+#RUN chmod 600 ${JENKINS_HOME}/.ssh/authorized_keys
 
 CMD ["/usr/sbin/sshd", "-D"]
