@@ -1,2 +1,6 @@
 .idea
 cloudant/cloudant-install/CLO_DLLED_1.0.0.3_LNX8664_UB,DEB_.tar.gz
+docker-binaries
+adobe-experience-manager/cq-author-4502.jar
+adobe-experience-manager/aem-dispatcher.tar
+adobe-experience-manager/licence.properties

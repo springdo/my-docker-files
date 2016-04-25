@@ -1,0 +1,20 @@
+#AEM Author on CentOS
+FROM centos:latest
+
+#0. Update
+RUN yum -y update
+RUN yum -y upgrade
+RUN yum install -y httpd
+
+EXPOSE 80 8080
+
+COPY dispatcher .
+RUN cp /dispatcher-apache2.4-4.1.8.so /etc/httpd/modules/
+RUN echo 'LoadModule dispatcher_module modules/dispatcher-apache2.4-4.1.8.so' >> /etc/httpd/conf.modules.d/00-base.conf
+RUN echo '' >> /etc/httpd/conf.modules.d/00-base.conf
+
+RUN cp /httpd.conf /etc/httpd/conf/httpd.conf
+RUN cp /dispatcher.any /etc/httpd/conf/
+# httpd -k start -e info -DFOREGROUND
+
+CMD ["httpd", "-k", "start", "-e", "info", "-DFOREGROUND"]
