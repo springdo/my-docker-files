@@ -6,13 +6,21 @@ RUN cat /etc/ssh/sshd_config
 RUN sed -i 's|session    required     pam_loginuid.so|session    optional     pam_loginuid.so|g' /etc/ssh/sshd_config
 #RUN cat /etc/pam.d/sshd
 
-#RUN adduser jenkins
-#RUN echo "jenkins:jenkins" | chpasswd
 RUN sed -i 's|PasswordAuthentication no|PasswordAuthentication yes|g' /etc/ssh/sshd_config
-RUN useradd -p dW7IzpQGfPQtY -ms /bin/bash jenkins
+
+# password is jenkins
+RUN useradd --uid=1099 -p dW7IzpQGfPQtY -ms /bin/bash jenkins
+ENV JENKINS_HOME /home/jenkins
+RUN mkdir -p ${JENKINS_HOME}/.ssh
+RUN chown -R jenkins:jenkins ${JENKINS_HOME}
+
+# Add Keys when needed
+#ADD id_rsa.pub ${JENKINS_HOME}/.ssh/authorized_keys
+#RUN chmod 700 ${JENKINS_HOME}/.ssh
+#RUN chmod 600 ${JENKINS_HOME}/.ssh/authorized_keys
+
 
 EXPOSE 22
-
 #RUN ufw allow from 86.6.45.94 to any port 4243
 #RUN ufw allow from 195.212.29.94
 
