@@ -1,4 +1,4 @@
-FROM registry.eu-gb.bluemix.net/my_containers/node-vanilla:latest
+FROM node-bluemix-vanilla
 MAINTAINER Donal Spring <donal@uk.ibm.com>
 
 RUN cat /etc/ssh/sshd_config
