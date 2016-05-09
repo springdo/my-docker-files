@@ -24,9 +24,13 @@ EXPOSE 22
 #RUN ufw allow from 86.6.45.94 to any port 4243
 #RUN ufw allow from 195.212.29.94
 
+# ensure git config is setup
+RUN git config --global user.email "jenkins@jenkins.ci"
+RUN git config --global user.name "jenkins"
 
 # Checking the versions against the configured ones in node-vanilla
 RUN node -v
 RUN npm -v
 
-CMD ["/usr/bin/supervisord", "-n"]
+#Starts the ssh daemon (without this you cannot ssh to this container)
+CMD ["/usr/sbin/sshd", "-D"]
