@@ -1,6 +1,4 @@
-docker run -h cloudant -d -p 1080:80 cloudant-dev
-
-
+# to run 
 # chmod +x ./scripts/cloudant-deploy.sh
 # ./scripts/cloudant-deploy.sh cloudant-dev 1080 3
 
