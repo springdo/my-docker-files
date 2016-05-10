@@ -10,7 +10,7 @@ RUN sed -i 's|session    required     pam_loginuid.so|session    optional     pa
 RUN sed -i 's|PasswordAuthentication no|PasswordAuthentication yes|g' /etc/ssh/sshd_config
 
 # password is jenkins
-RUN useradd --uid=1099 -p dW7IzpQGfPQtY -ms /bin/bash jenkins
+RUN useradd --uid=994 -p dW7IzpQGfPQtY -ms /bin/bash jenkins
 ENV JENKINS_HOME /home/jenkins
 RUN mkdir -p ${JENKINS_HOME}/.ssh
 RUN chown -R jenkins:jenkins ${JENKINS_HOME}

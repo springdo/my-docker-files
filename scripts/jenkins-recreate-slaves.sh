@@ -2,9 +2,9 @@
 # stops and removes containers matching $image_name-
 # reruns number of slaves with port range starting template_port+1
 
-# run ::
-# chmod +x ./scripts/docker-recreate-slaves.sh
-# ./scripts/docker-recreate-slaves.sh jenkins-bluemix-slave 2210 5
+# # run ::
+# chmod +x ./scripts/jenkins-recreate-slaves.sh
+# ./scripts/jenkins-recreate-slaves.sh jenkins-bluemix-slave 2210 5
 
 image_name=${1}; shift
 template_port=${1}; shift
