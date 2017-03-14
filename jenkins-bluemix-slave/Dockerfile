@@ -14,7 +14,7 @@ RUN useradd --uid=996 -p dW7IzpQGfPQtY -ms /bin/bash jenkins
 ENV JENKINS_HOME /home/jenkins
 RUN mkdir -p ${JENKINS_HOME}/.ssh
 RUN chown -R jenkins:jenkins ${JENKINS_HOME}
-
+RUN adduser jenkins sudo
 # Add Keys when needed
 #ADD id_rsa.pub ${JENKINS_HOME}/.ssh/authorized_keys
 #RUN chmod 700 ${JENKINS_HOME}/.ssh
